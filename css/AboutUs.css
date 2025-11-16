@@ -150,6 +150,11 @@ header {
   transform: rotate(-45deg) translate(4px, -4px);
 }
 
+.content {
+  margin-top: 200px;
+}
+
+
 /* ===============================
    HERO SECTION
 =============================== */

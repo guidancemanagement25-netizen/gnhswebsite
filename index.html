@@ -192,6 +192,15 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="js/dashboard.js"></script>
   <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('open');
+      navLinks.classList.toggle('show');
+    });
+  </script>
+  <script>
   document.getElementById("viewAllBtn").addEventListener("click", () => {
   window.location.href = "html/Announcement.html";
   });
