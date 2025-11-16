@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Announcements | Guinayang National Highschool</title>
+  <link rel="stylesheet" href="../css/Announcement.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="nav-left">
+        <img src="../img/GNHS LOGO.png" alt="School Logo" />
+        <h4>Guinayang National <br> Highschool</h4>
+      </div>
+
+      <!-- ✅ Hamburger Menu -->
+      <div class="menu-toggle">☰</div>
+
+      <nav class="nav-links">
+        <a href="../html/Student-Teacher-Dashboard.html">Home</a>
+        <a href="../html/Announcement.html" class="active">Announcements</a>
+        <a href="../html/AboutUs.html">About Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="separator"></div>
+
+  <!-- ANNOUNCEMENT SECTION -->
+  <section class="announcement-section">
+    <!-- ✅ Firestore announcements will load here -->
+    <div id="announcement-container" class="announcement-container"></div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <h2>Guinayang National Highschool</h2>
+      <p>
+        Jurado Compound, Guinayang, San Mateo, Rizal<br><br>
+        Phone: (123) 456-7890<br>
+        Email: guinayanghighschool.edu
+      </p>
+
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <p>© 2025 Guinayang National Highschool. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ✅ JS IMPORTS -->
+  <script type="module">
+    import { fetchAnnouncements } from "../js/fetchAnnouncement.js";
+
+    // Fetch Firestore data
+    fetchAnnouncements("announcement-container");
+  </script>
+
+  <!-- ✅ Hamburger + Modal Logic -->
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('open');
+      navLinks.classList.toggle('show');
+    });
+
+    // ✅ MODAL POPUP LOGIC
+    const modal = document.getElementById('announcement-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const closeBtn = document.querySelector('.close-btn');
+
+    // open modal when clicking dynamic announcement boxes
+    document.addEventListener('click', (e) => {
+      const box = e.target.closest('.announcement-box');
+      if (!box) return;
+      modalTitle.textContent = box.dataset.title;
+      modalContent.textContent = box.dataset.content;
+      modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

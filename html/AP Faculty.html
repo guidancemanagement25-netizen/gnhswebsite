@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guinayang National Highschool</title>
+  <link rel="stylesheet" href="../css/Faculty.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;600;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="nav-left">
+        <img src="../img/GNHS LOGO.png" alt="School Logo" />
+        <h4>Guinayang National <br> Highschool</h4>
+      </div>
+
+      <div class="menu-toggle">☰</div>
+
+      <nav class="nav-links">
+        <a href=../html/Student-Teacher-Dashboard.html>Home</a>
+        <a href="../html/Announcement.html">Announcements</a>
+        <a href="../html/AboutUs.html" class="active">About Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="separator"></div>
+
+  <!-- ✅ CENTERED DEPARTMENT SECTION -->
+  <div class="content department-wrapper">
+
+    <div class="Faculty-Header">
+      <h1>ARALING PANLIPUNAN <br>DEPARTMENT</h1>
+    </div>
+
+    <div class="Dept-Head">
+      <div class="top">
+        <img src="../img/dept head.png" alt="dept head">
+      </div>
+
+      <div class="bottom">
+        <h3>Ms. Samantha A. Smith</h3>
+        <p>Department Head</p>
+      </div>
+    </div>
+
+    <!-- FACULTY GRID -->
+    <div class="faculty-grid">
+
+      <div class="Faculty-Members">
+        <div class="top-container">
+          <img src="../img/teacher.png" alt="">
+        </div>
+        <div class="bottom-container">
+          <h4>Ms. Amelia C. Castro</h4>
+        </div>
+      </div>
+
+      <div class="Faculty-Members">
+        <div class="top-container">
+          <img src="../img/teacher.png" alt="">
+        </div>
+        <div class="bottom-container">
+          <h4>Ms. Amelia C. Castro</h4>
+        </div>
+      </div>
+
+      <div class="Faculty-Members">
+        <div class="top-container">
+          <img src="../img/teacher.png" alt="">
+        </div>
+        <div class="bottom-container">
+          <h4>Ms. Amelia C. Castro</h4>
+        </div>
+      </div>
+
+    </div>
+
+  </div> <!-- END CONTENT -->
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <h2>Guinayang National Highschool</h2>
+      <p>
+        Jurado Compound, Guinayang, San Mateo, Rizal<br><br>
+        Phone: (123) 456-7890<br>
+        Email: guinayanghighschool.edu
+      </p>
+
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <p>© 2025 Guinayang National Highschool. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script type="module" src="../js/faculty.js"></script>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('open');
+      navLinks.classList.toggle('show');
+    });
+  </script>
+
+</body>
+</html>

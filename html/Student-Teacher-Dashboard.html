@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guinayang National Highschool</title>
+  <link rel="stylesheet" href="../css/Student-Teacher-Dashboard.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;600;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="nav-left">
+        <img src="../img/GNHS LOGO.png" alt="School Logo" />
+        <h4>Guinayang National <br> Highschool</h4>
+      </div>
+
+      <div class="menu-toggle">☰</div>
+
+      <nav class="nav-links">
+        <a href="#" class="active">Home</a>
+        <a href="../html/Announcement.html">Announcements</a>
+        <a href="../html/AboutUs.html">About Us</a>
+      </nav>
+    </div>
+  </header>
+  <div class="separator"></div>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-image">
+      <img src="../img/about.png" alt="Students in classroom">
+    </div>
+    <div class="hero-content">
+      <h2>Welcome to Guinayang National Highschool</h2>
+      <h1>
+        Where Young Minds <br />
+        Blossom and <span>Dreams Take Flight.</span>
+      </h1>
+      <p>
+        Our dedicated educators and dynamic learning environment inspire every
+        student to reach their fullest potential, nurturing both knowledge and
+        character for a brighter future.
+      </p>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section class="about container">
+    <h1>About Guinayang National Highschool</h1>
+    <p>Subheading that sets up context, shares more info about the school, or something that gets people excited to keep
+      scrolling.</p>
+    <button id="aboutBtn">About Us</button>
+    <img src="../img/about.png" alt="About School" />
+  </section>
+
+  <!-- ANNOUNCEMENTS -->
+  <section class="announcements container">
+    <div class="announcements-header">
+      <h1>Announcements</h1>
+      <div class="view-all">
+        <button id="viewAllBtn">View All Announcements</button>
+      </div>
+    </div>
+
+    <div class="announcements-grid" id="announcementsContainer">
+      <!-- JS will dynamically insert 3 latest announcements here -->
+    </div>
+  </section>
+
+  <!-- MOBILE APP SECTION -->
+  <section class="mobile-app">
+    <div class="container">
+      <h1>Your Safe Space, in your Pocket</h1>
+      <h3>Introducing the official Guidance Application of Guinayang National High School — your private, secure way to report concerns and seek help with the guidance office anytime, anywhere.</h3>
+    </div>
+
+    <div class="mobile-app-content">
+      <div class="app-preview">
+        <img src="../img/mobile app logo.png" alt="Mobile App">
+      </div>
+
+      <div class="mobile-app-details">
+        <p>✔ Report abuse, bullying, or harassment securely</p>
+        <p>✔ Request counseling or emotional support</p>
+        <p>✔ Track case progress and guidance responses</p>
+        <p>✔ Confidential & anonymous options available</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD SECTION -->
+  <section class="download">
+    <h1>Download the Guidance App Now</h1>
+    <p>Your voice matters. Let's build a safer, more supportive school community — together.</p>
+    <button id="downloadBtn">CLICK TO DOWNLOAD</button>
+  </section>
+
+  <!-- POPUP FORM -->
+  <div class="download-form-overlay" id="formOverlay">
+    <div class="download-form">
+      <h2>Fill out this form to continue</h2>
+      <h3>Your information is safe with us.</h3>
+
+      <form id="userForm">
+        <h1>Student Information</h1>
+        <label for="lrn">LRN:</label>
+        <input type="text" id="lrn" maxlength="12" pattern="\d{12}" title="LRN must be exactly 12 digits" required>
+
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" required>
+
+        <label for="firstname">Firstname:</label>
+        <input type="text" id="firstname" required>
+
+        <label for="middlename">Middlename:</label>
+        <input type="text" id="middlename" required>
+
+        <label for="grade">Grade Level:</label>
+        <select id="grade" required>
+          <option value="">Select Grade</option>
+          <option value="Grade 7">Grade 7</option>
+          <option value="Grade 8">Grade 8</option>
+          <option value="Grade 9">Grade 9</option>
+          <option value="Grade 10">Grade 10</option>
+        </select>
+
+        <label for="section">Section:</label>
+        <input type="text" id="section" required>
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" required>
+
+        <label for="birthday">Birthday:</label>
+        <input type="date" id="birthday" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" required>
+
+        <label for="contact">Contact No:</label>
+        <input type="text" id="contact" required>
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" required>
+
+        <h1>Guardian Information</h1>
+        <label for="guardianName">Guardian Name:</label>
+        <input type="text" id="guardianName" required>
+
+        <label for="guardianContact">Guardian Contact No:</label>
+        <input type="text" id="guardianContact" required>
+
+        <label for="relationship">Relationship:</label>
+        <input type="text" id="relationship" required>
+
+        <div class="form-buttons">
+          <button type="submit" class="submit-btn">Submit & Download</button>
+          <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <h2>Guinayang National Highschool</h2>
+      <p>
+        Jurado Compound, Guinayang, San Mateo, Rizal<br><br>
+        Phone: (123) 456-7890<br>
+        Email: guinayanghighschool.edu
+      </p>
+
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <p>© 2025 Guinayang National Highschool. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="../js/dashboard.js"></script>
+  <script>
+  document.getElementById("viewAllBtn").addEventListener("click", () => {
+  window.location.href = "../html/Announcement.html";
+  });
+ </script>
+ <script>
+  document.getElementById("aboutBtn").addEventListener("click", () => {
+  window.location.href = "../html/AboutUs.html";
+  });
+</script>
+</body>
+
+</html>

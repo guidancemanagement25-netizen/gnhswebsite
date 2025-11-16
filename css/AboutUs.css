@@ -1,0 +1,648 @@
+/* ===============================
+   GLOBAL BASE
+=============================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Abhaya Libre', serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgba(217, 121, 25, 0.3);
+  color: #222;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+/* ===============================
+   HEADER
+=============================== */
+header {
+  background-color: #800000;
+  color: #fff;
+  padding: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 100;
+}
+
+.separator {
+  width: 100%;
+  height: 26px;
+  background-color: #C40410;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-left img {
+  height: 75px;
+}
+
+.nav-left h4 {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  position: relative;
+  transition: color 0.3s ease;
+  padding: 2px 0;
+}
+
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background-color: #ffce00;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+.nav-links a:hover {
+  color: #ffce00;
+}
+
+
+.nav-links a.active {
+  color: #ffce00;
+}
+.nav-links a.active::after {
+  width: 100%;
+}
+
+/* ===============================
+   HAMBURGER MENU
+=============================== */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 22px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.menu-toggle .bar {
+  width: 100%;
+  height: 2px;
+  background-color: #ffce00;
+  border-radius: 2px;
+  margin: 3px 0;
+  transition: all 0.4s ease;
+}
+
+/* Animate into X when open */
+.menu-toggle.open .bar:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+.menu-toggle.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.open .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
+}
+
+/* ===============================
+   HERO SECTION
+=============================== */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  padding: 80px 100px;
+  flex-wrap: wrap;
+}
+
+.hero-image {
+  flex: 1 1 45%;
+  max-width: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.hero-content {
+  flex: 1 1 45%;
+  max-width: 550px;
+}
+
+.hero-content h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #6b4f3b;
+  margin-bottom: 10px;
+}
+
+.hero-content h1 {
+  font-size: 42px;
+  line-height: 1.2;
+  color: #111;
+  font-weight: 800;
+}
+
+.hero-content h1 span {
+  color: #c40410;
+}
+
+.hero-content p {
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #444;
+  max-width: 90%;
+}
+
+/* ===============================
+   ABOUT US SECTIONS
+=============================== */
+.mission-vision,
+.our-achievements,
+.our-history,
+.our-Teachers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.mission-vision-container,
+.our-achievements-container,
+.our-history-container,
+.our-Teachers-container {
+  background-color: rgba(245, 205, 4, 0.33);
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 20px 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.mission-vision-header h1,
+.our-achievements-header h1,
+.our-history-header h1,
+.our-Teachers-header h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.mission-vision-description,
+.our-achievements-description,
+.our-history-description,
+.our-Teachers-description {
+  text-align: center;
+  max-width: 800px;
+  color: #333;
+  line-height: 1.8;
+  padding: 0 20px;
+}
+
+/* ===============================
+   MISSION & VISION CARDS
+=============================== */
+.mission-vision-cards {
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mission-card,
+.vision-card {
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  padding: 25px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid black;
+}
+
+.mission-card {
+  background-color: #C40410;
+  color: white;
+}
+
+.vision-card {
+  background-color: #F5CD04;
+  color: #111;
+}
+
+.mission-card h2,
+.vision-card h2 {
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mission-card img,
+.vision-card img {
+  height: 60px;
+}
+
+.mission-card p,
+.vision-card p {
+  font-size: 18px;
+  line-height: 1.8;
+  margin-top: 25px;
+}
+
+/* ===============================
+   AWARDS
+=============================== */
+.awards-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 60px;
+  margin-bottom: 80px;
+}
+
+.awards {
+  background-color: #F5CD04;
+  width: 300px;
+  padding: 40px 20px 30px 20px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 4px 6px 0px 0px black;
+}
+
+.awards-icon {
+  background-color: #C40410;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  position: absolute;
+  top: -30px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.awards-icon img {
+  width: 30px;
+  height: 30px;
+}
+
+.awards h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 40px;
+  margin-bottom: 15px;
+}
+
+.awards p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ===============================
+   HISTORY
+=============================== */
+.History-timeline {
+  background-color: #C40410;
+  width: 90%;
+  max-width: 900px;
+  padding: 40px;
+  border-radius: 12px;
+  margin: 40px auto;
+  box-shadow: 4px 6px 0px 0px black;
+  color: white;
+}
+
+.History-timeline-year {
+  background-color: white;
+  color: black;
+  width: 250px;
+  height: 90px;
+  margin: 50px auto 20px;
+  box-shadow: 4px 6px 0px 0px black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.History-timeline h2 {
+  font-size: 48px;
+}
+
+.History-timeline-event {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.History-timeline-event h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.History-timeline-event p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* ===============================
+   PRINCIPAL
+=============================== */
+.Principal {
+  width: 90%;
+  max-width: 500px;
+  background-color: #880e0e;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 40px auto;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.Principal img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.principal-content {
+  background-color: #a55e5e;
+  padding: 10px 15px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.principal-name h1 {
+  font-size: 28px;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000,
+               -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.principal-name h4 {
+  color: #ffee58;
+  font-size: 22px;
+}
+
+/* ===============================
+   FACULTY GRID
+=============================== */
+.Teachers-container-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  padding: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.Departments {
+  background-color: #F5CD04;
+  border-radius: 12px;
+  box-shadow: 4px 6px 0px 0px black;
+  text-align: center;
+  padding: 20px;
+}
+
+.Departments h1 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.Departments img {
+  width: 180px;
+  margin: 10px auto;
+}
+
+.Departments p {
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+.Dept-btn {
+  background-color: #C40410;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.Dept-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ===============================
+   FACULTY TEAM IMAGE
+=============================== */
+.Faculty-Team {
+  background-color: #800000;
+  width: 90%;
+  max-width: 1000px;
+  margin: 50px auto 100px;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+}
+
+.Faculty-Team img {
+  width: 90%;
+  border-radius: 12px;
+}
+
+/* ===============================
+   FOOTER
+=============================== */
+footer {
+  background-color: #800000;
+  color: #fff;
+  text-align: center;
+  padding: 60px 20px 40px;
+  margin-top: 40px;
+}
+
+footer h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+footer p {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.footer-links {
+  margin-top: 15px;
+}
+
+.footer-links a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #ffce00;
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+=============================== */
+
+/* For screens smaller than 1200px */
+@media (max-width: 1200px) {
+  .hero {
+    padding: 60px 40px;
+    gap: 30px;
+  }
+  .hero-content h1 {
+    font-size: 36px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mission-vision-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Principal {
+    width: 90%;
+  }
+   .menu-toggle {
+    display: flex;
+  }
+   .nav-links {
+    display: none;
+  }
+  .nav-links.show {
+    display: flex;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #800000;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    border-top: 2px solid #ffce00;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 99;
+  }
+
+  .nav-links.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+  .awards {
+    width: 85%;
+  }
+
+  .Departments {
+    width: 90%;
+  }
+
+  .Faculty-Team img {
+    width: 100%;
+  }
+}
+
+/* Extra small */
+@media (max-width: 480px) {
+  .hero-content h1 {
+    font-size: 28px;
+  }
+
+  .mission-vision-header h1,
+  .our-achievements-header h1,
+  .our-history-header h1,
+  .our-Teachers-header h1 {
+    font-size: 24px;
+  }
+
+  footer h2 {
+    font-size: 20px;
+  }
+
+  footer p {
+    font-size: 13px;
+  }
+}
