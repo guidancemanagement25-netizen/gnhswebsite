@@ -23,14 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const gradeSelect = document.getElementById("grade");
   const sectionInput = document.getElementById("section");
   const lrnInput = document.getElementById("lrn");
-const menuToggle = document.querySelector('.menu-toggle');
-const navLinks = document.querySelector('.nav-links');
 
-if (menuToggle && navLinks) {
-  menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-  });
-}
+
   if (!downloadBtn || !formOverlay || !cancelBtn || !userForm) return;
 
   // LRN numeric restriction
