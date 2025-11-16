@@ -12,6 +12,8 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
   // DOM Elements
   const downloadBtn = document.getElementById("downloadBtn");
@@ -21,7 +23,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const gradeSelect = document.getElementById("grade");
   const sectionInput = document.getElementById("section");
   const lrnInput = document.getElementById("lrn");
+const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
 
+if (menuToggle && navLinks) {
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+}
   if (!downloadBtn || !formOverlay || !cancelBtn || !userForm) return;
 
   // LRN numeric restriction
