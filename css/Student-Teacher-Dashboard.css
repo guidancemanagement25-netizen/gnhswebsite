@@ -141,10 +141,6 @@ header {
   transform: rotate(-45deg) translate(4px, -4px);
 }
 
-.content {
-  margin-top: 200px;
-}
-
 
 /* ===============================
    HERO SECTION
@@ -448,12 +444,32 @@ header {
   border-radius: 8px;
   cursor: pointer;
   transition: 0.3s ease;
+  margin-bottom: 20px;
 }
 
 .download button:hover {
   background-color: #b22222;
   transform: translateY(-2px);
 }
+
+.download h4 {
+  font-size: 20px;
+  color: #444;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+.download h4 a#openVerifyForm {
+  color: #b91c1c;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.download h4 a#openVerifyForm:hover {
+  color: #8a1313; /* slightly darker red */
+}
+
+
 
 /* ===============================
    POPUP FORM
@@ -491,6 +507,7 @@ header {
   display: block;
   margin-top: 12px;
   font-weight: 600;
+  text-align: left;
 }
 
 .download-form input,
@@ -535,10 +552,91 @@ header {
   background-color: #999;
 }
 
+/* Privacy Consent Checkbox Container */
+.privacy-consent {
+  display: flex;
+  align-items: center; /* FIX: align vertically */
+  gap: 10px;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/* Checkbox Styling */
+.privacy-consent input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0; /* FIX: remove extra top margin */
+  flex-shrink: 0;
+}
+
+/* Privacy Text Styling */
+.privacy-consent span {
+  line-height: 1.4;
+  display: block;
+}
+
+/* Link Styling */
+.privacy-consent span a {
+  color: #800000;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.privacy-consent strong {
+  color: #800000;
+}:xr-overlay
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+
+/* TOKEN RECOVERY FORM STYLES */
+.verify-form-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.verify-form {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.verify-form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.verify-form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
 
 /* ===============================
    FOOTER
@@ -608,7 +706,7 @@ footer p {
     align-items: center;
     gap: 20px;
     padding: 20px 0;
-    border-top: 2px solid #800000;
+    border-top: 2px solid #ffce00;
     visibility: hidden;
     opacity: 0;
     transform: translateY(-10px);
@@ -616,11 +714,12 @@ footer p {
     z-index: 99;
   }
 
-  .nav-links.show {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
+  .nav-links.active {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
   }
+
 
   .menu-toggle {
     display: flex;
@@ -700,5 +799,14 @@ footer p {
   .download h1 {
     font-size: 32px;
   }
-}
 
+  .form-buttons {
+    flex-direction: column;  /* stack vertically */
+    gap: 15px;
+  }
+
+  .submit-btn,
+  .cancel-btn {
+    width: 100%;             /* full width on mobile */
+  }
+}
