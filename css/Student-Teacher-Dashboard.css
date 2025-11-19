@@ -706,7 +706,7 @@ footer p {
     align-items: center;
     gap: 20px;
     padding: 20px 0;
-    border-top: 2px solid #ffce00;
+    border-top: 2px solid #800000;
     visibility: hidden;
     opacity: 0;
     transform: translateY(-10px);
