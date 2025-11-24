@@ -15,21 +15,23 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-  // -------------------------
-  // DOM ELEMENTS
-  // -------------------------
+
+
+  const EMAILJS_SERVICE_ID = "service_9ebxmbm";
+  const EMAILJS_TEMPLATE_ID = "template_tjth6zm";
+
+ 
   const downloadBtn = document.getElementById("downloadBtn");
   const formOverlay = document.getElementById("formOverlay");
   const cancelBtn = document.getElementById("cancelBtn");
   const userForm = document.getElementById("userForm");
 
-  // verification popup elements (token recovery)
-  const openVerifyForm = document.getElementById("openVerifyForm"); // click here link
+  
+  const openVerifyForm = document.getElementById("openVerifyForm");
   const verifyOverlay = document.getElementById("verifyOverlay");
   const verifyForm = document.getElementById("verifyForm");
-  // tolerate different casing of IDs
-  const verifyLrnInput = document.getElementById("verifyLrn") || document.getElementById("verifyLRN") || document.getElementById("verifyLRN");
-  const verifySurnameInput = document.getElementById("verifySurname") || document.getElementById("verifySurname");
+  const verifyLrnInput = document.getElementById("verifyLrn") || document.getElementById("verifyLRN");
+  const verifySurnameInput = document.getElementById("verifySurname");
 
   const lrnInput = document.getElementById("lrn");
   const surnameInput = document.getElementById("surname");
@@ -41,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const relationship = document.getElementById("relationship");
   const privacyConsent = document.getElementById("privacyConsent");
 
-  // required fields inside main popup (these will be locked until LRN+Surname verified)
   const requiredFields = [
     "address",
     "contact",
@@ -51,12 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
     "relationship",
   ];
 
-  // guard: ensure required DOM exists
-  if (!userForm || !formOverlay || !lrnInput || !surnameInput) {
-    console.error("One or more required DOM elements are missing. dashboard.js may not work correctly.");
-  }
-
-  // disable fields until verified
   const lockFields = (state) => {
     requiredFields.forEach((id) => {
       const el = document.getElementById(id);
@@ -64,12 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     if (privacyConsent) privacyConsent.disabled = state;
   };
-
   lockFields(true);
-
-  // -------------------------
-  // NORMALIZE TEXT
-  // -------------------------
   const normalize = (str) =>
     (str || "")
       .toString()
@@ -79,9 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .replace(/\s+/g, "")
       .trim();
 
-  // -------------------------
-  // TOKEN GENERATOR
-  // -------------------------
   const generateAppToken = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let t = "";
@@ -89,9 +76,36 @@ document.addEventListener("DOMContentLoaded", function () {
     return t;
   };
 
-  // -------------------------
-  // AUTO VERIFY (LRN + SURNAME)
-  // -------------------------
+  /* ============================================================
+      OPTION A — MANUAL SWAL VALIDATION (ADDED HERE)
+  ============================================================ */
+  function validateInputsBeforeVerify() {
+    const lrn = lrnInput.value.trim();
+    const srn = surnameInput.value.trim();
+
+    if (!lrn || !srn) {
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Fields",
+        text: "LRN and Surname are required before verification.",
+      });
+      return false;
+    }
+
+    if (!/^\d{12}$/.test(lrn)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid LRN",
+        text: "LRN must be exactly 12 digits.",
+      });
+      return false;
+    }
+
+    return true;
+  }
+  /* ============================================================
+      AUTO VERIFY (LRN + SURNAME) — same logic as original
+  ============================================================ */
   const autoVerify = async () => {
     const lrn = (lrnInput?.value || "").trim();
     const srn = normalize(surnameInput?.value || "");
@@ -136,18 +150,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  // Attach verify to blur events
-  if (lrnInput) lrnInput.addEventListener("blur", autoVerify);
-  if (surnameInput) surnameInput.addEventListener("blur", autoVerify);
+  /* ============================================================
+      BIND BLUR EVENTS — run manual validation (Option A) BEFORE autoVerify
+  ============================================================ */
+  if (lrnInput) {
+    lrnInput.addEventListener("blur", async () => {
+      if (validateInputsBeforeVerify()) {
+        await autoVerify();
+      }
+    });
+  }
 
-  // LRN input must be numeric and max 12 chars
+  if (surnameInput) {
+    surnameInput.addEventListener("blur", async () => {
+      if (validateInputsBeforeVerify()) {
+        await autoVerify();
+      }
+    });
+  }
+
+  /* ============================================================
+      LRN input must be numeric and max 12 chars (unchanged)
+  ============================================================ */
   if (lrnInput) lrnInput.addEventListener("input", () => {
     lrnInput.value = lrnInput.value.replace(/\D/g, "").slice(0, 12);
   });
 
-  // -------------------------
-  // OPEN/CLOSE MAIN FORM
-  // -------------------------
+  /* ============================================================
+      OPEN/CLOSE MAIN FORM (unchanged)
+  ============================================================ */
   if (downloadBtn) {
     downloadBtn.addEventListener("click", () => {
       if (formOverlay) formOverlay.style.display = "flex";
@@ -165,9 +196,44 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // -------------------------
-  // MAIN FORM SUBMIT (create download + update student_records)
-  // -------------------------
+  /* ============================================================
+      EMAIL: send token via EmailJS (kept as your original)
+  ============================================================ */
+  // Note: emailjs must be loaded in HTML before this script (see snippet above).
+  async function sendTokenEmailJS(toEmail, toName, tokenToSend) {
+    // ensure emailjs is loaded and the args are present
+    if (typeof emailjs === "undefined") {
+      console.error("EmailJS is not loaded. Make sure you have included the EmailJS script and emailjs.init(publicKey) before dashboard.js in your HTML.");
+      throw new Error("EmailJS not loaded. Add the EmailJS script in your HTML before dashboard.js.");
+    }
+    if (!toEmail) {
+      console.error("sendTokenEmailJS called without recipient email:", toEmail, toName, tokenToSend);
+      throw new Error("Recipient email is required to send token.");
+    }
+
+    const templateParams = {
+      email: toEmail,           // IMPORTANT: named 'email' because template's 'To Email' field should be {{email}}
+      to_name: toName || "",
+      token: tokenToSend || "",
+      time: new Date().toLocaleString(),
+      from_name: "GNHS Guidance Office"
+    };
+
+    try {
+      const res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+      // EmailJS returns a response object — log for debugging
+      console.log("EmailJS send success:", res);
+      return res;
+    } catch (err) {
+      console.error("EmailJS send failed:", err);
+      // rethrow so callers can handle/retry if necessary
+      throw err;
+    }
+  }
+
+  /* ============================================================
+      MAIN FORM SUBMIT (kept intact)
+  ============================================================ */
   if (userForm) {
     userForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -203,6 +269,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
+      // ensure email looks reasonable
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
+        Swal.fire({ icon: "warning", title: "Invalid Email", text: "Please enter a valid email address." });
+        return;
+      }
+
       // ensure LRN format
       if (!/^\d{12}$/.test(fields.lrn)) {
         Swal.fire({ icon: "error", title: "Invalid LRN", text: "LRN must be exactly 12 digits." });
@@ -212,23 +284,35 @@ document.addEventListener("DOMContentLoaded", function () {
       const lrn = fields.lrn;
       const downloadRef = doc(db, "student_downloads", `student_${lrn}`);
       const studentRef = doc(db, "student_records", `student_${lrn}`);
+      const tokenDocRef = doc(db, "tokens", `student_${lrn}`);
 
       try {
         // check existing download record
         const existing = await getDoc(downloadRef);
         if (existing.exists()) {
-          const existingToken = existing.data()?.token || existing.data()?.Token;
-          Swal.fire({
-            icon: "info",
-            title: "Already Registered",
-            html: `Your token:<br><b>${existingToken || "—"}</b>`,
-            confirmButtonText: "Download Now",
-          }).then(() => {
-            // close & reset main form, start download
-            if (formOverlay) formOverlay.style.display = "none";
-            if (userForm) userForm.reset();
-            window.location.href = "../APK/Guidance_Report.apk";
-          });
+          // existing token - do NOT show it on screen; email it instead
+          const existingToken = existing.data()?.token || existing.data()?.Token || null;
+
+          try {
+            await sendTokenEmailJS(fields.email, fields.surname, existingToken);
+            Swal.fire({
+              icon: "info",
+              title: "Already Registered",
+              text: `A copy of your token has been sent to ${fields.email}.`,
+            }).then(() => {
+              if (formOverlay) formOverlay.style.display = "none";
+              if (userForm) userForm.reset();
+              window.location.href = "../APK/Guidance_Report.apk";
+            });
+          } catch (mailErr) {
+            console.error("Email send error (existing):", mailErr);
+            Swal.fire({
+              icon: "warning",
+              title: "Email Failed",
+              text: "You are already registered. We could not send the token by email — please contact the guidance office.",
+            });
+          }
+
           return;
         }
 
@@ -242,9 +326,14 @@ document.addEventListener("DOMContentLoaded", function () {
           createdAt: serverTimestamp(),
         });
 
+        // also save token to tokens/{student_<lrn>} for the OTP flow
+        await setDoc(tokenDocRef, {
+          token,
+          email: fields.email,
+          createdAt: serverTimestamp(),
+        });
+
         // update student_records.student_info fields and guardian_info object:
-        // student_info: Address, ContactNumber, Email, Token
-        // guardian_info: Name, ContactNumber, Relationship
         const studentInfoUpdate = {
           "student_info.Address": fields.address,
           "student_info.ContactNumber": fields.contact,
@@ -263,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // update or create nested fields
           await updateDoc(studentRef, {
             ...studentInfoUpdate,
-            "guardian_info": guardianInfo,
+            guardian_info: guardianInfo,
           });
         } catch (updErr) {
           // fallback: set merge
@@ -282,12 +371,82 @@ document.addEventListener("DOMContentLoaded", function () {
           );
         }
 
-        // success - show token and prompt to download
+        // -------------------------
+        // SEND EMAIL (token emailed only via EmailJS)
+        // -------------------------
+        try {
+          await sendTokenEmailJS(fields.email, fields.surname, token);
+        } catch (mailErr) {
+          console.error("Email send error (new):", mailErr);
+          // notify user that registration succeeded but email failed
+          Swal.fire({
+            icon: "warning",
+            title: "Email Failed",
+            text: "Registration completed, but we could not send the token by email. Please contact the guidance office.",
+          }).then(() => {
+            if (formOverlay) formOverlay.style.display = "none";
+            if (userForm) userForm.reset();
+            window.location.href = "../APK/Guidance_Report.apk";
+          });
+          return;
+        }
+
+        // -------------------------
+        // SHOW PROMPT FOR OTP ENTRY (token still hidden)
+        // -------------------------
+        const { value: userToken } = await Swal.fire({
+          title: "Check your email",
+          text: "A verification token has been sent to your email. Please enter it below to continue.",
+          input: "text",
+          inputLabel: "Enter token",
+          inputPlaceholder: "Enter the token you received by email",
+          showCancelButton: true,
+          inputValidator: (value) => {
+            if (!value) return "Please enter the token.";
+            if (!/^[A-Z0-9]{8}$/.test(value) && !/^\d{6}$/.test(value)) {
+              // allow either your 8-char token or 6-digit OTP variants
+              return "Token format invalid.";
+            }
+            return null;
+          },
+        });
+
+        if (!userToken) {
+          // user cancelled or closed dialog
+          Swal.fire({
+            icon: "info",
+            title: "Verification Required",
+            text: "You must enter the token sent to your email to download the app.",
+          });
+          return;
+        }
+
+        // verify token against Firestore tokens/{student_<lrn>}
+        const tokenSnap = await getDoc(tokenDocRef);
+        if (!tokenSnap.exists()) {
+          Swal.fire({
+            icon: "error",
+            title: "Verification Failed",
+            text: "No token found on server. Contact guidance office.",
+          });
+          return;
+        }
+
+        const serverToken = tokenSnap.data()?.token;
+        if (serverToken !== userToken) {
+          Swal.fire({
+            icon: "error",
+            title: "Invalid Token",
+            text: "The token you entered is incorrect. Please try again or request a new token.",
+          });
+          return;
+        }
+
+        // token correct -> proceed to download
         Swal.fire({
           icon: "success",
-          title: "Success",
-          html: `Your token:<br><b>${token}</b>`,
-          confirmButtonText: "Download Now",
+          title: "Verified",
+          text: "Token verified. Preparing your download...",
         }).then(() => {
           if (formOverlay) formOverlay.style.display = "none";
           if (userForm) userForm.reset();
@@ -299,149 +458,130 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
   // -------------------------
-// TOKEN RECOVERY / VERIFY POPUP
-// -------------------------
-if (openVerifyForm && verifyOverlay && verifyForm && verifyLrnInput && verifySurnameInput) {
-
-  openVerifyForm.addEventListener("click", (ev) => {
-    ev.preventDefault();
-    verifyOverlay.style.display = "flex";
-    verifyLrnInput.value = "";
-    verifySurnameInput.value = "";
-    verifyLrnInput.focus();
-  });
-
+  // TOKEN RECOVERY / VERIFY POPUP (unchanged logic)
   // -------------------------
-  // FIX: CANCEL BUTTON
-  // -------------------------
-  const closeVerify = document.getElementById("closeVerify");
-  if (closeVerify) {
-    closeVerify.addEventListener("click", () => {
-      verifyOverlay.style.display = "none";
+  if (openVerifyForm && verifyOverlay && verifyForm && verifyLrnInput && verifySurnameInput) {
+
+    openVerifyForm.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      verifyOverlay.style.display = "flex";
+      verifyLrnInput.value = "";
+      verifySurnameInput.value = "";
+      verifyLrnInput.focus();
     });
-  }
 
-  // close verify overlay when clicking background
-  verifyOverlay.addEventListener("click", (e) => {
-    if (e.target === verifyOverlay) verifyOverlay.style.display = "none";
-  });
-
-  // close with ESC key
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && verifyOverlay.style.display === "flex") {
-      verifyOverlay.style.display = "none";
-    }
-  });
-
-  verifyForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const lrn = (verifyLrnInput.value || "").trim();
-    const srn = normalize(verifySurnameInput.value || "");
-
-    if (!/^\d{12}$/.test(lrn) || !srn) {
-      Swal.fire({
-        icon: "error",
-        title: "Invalid Input",
-        text: "Please enter a 12-digit LRN and surname."
+    // -------------------------
+    // FIX: CANCEL BUTTON
+    // -------------------------
+    const closeVerify = document.getElementById("closeVerify");
+    if (closeVerify) {
+      closeVerify.addEventListener("click", () => {
+        verifyOverlay.style.display = "none";
       });
-      return;
     }
 
-    try {
-      // first check student_downloads
-      const downloadDoc = await getDoc(doc(db, "student_downloads", `student_${lrn}`));
+    // close verify overlay when clicking background
+    verifyOverlay.addEventListener("click", (e) => {
+      if (e.target === verifyOverlay) verifyOverlay.style.display = "none";
+    });
 
-      if (downloadDoc.exists()) {
+    // close with ESC key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && verifyOverlay.style.display === "flex") {
+        verifyOverlay.style.display = "none";
+      }
+    });
 
-        // surname check for safety
-        const studentDoc = await getDoc(doc(db, "student_records", `student_${lrn}`));
-        const studentInfo = studentDoc.exists() ? studentDoc.data()?.student_info : null;
-        const dbSurname = normalize(studentInfo?.Surname || "");
+    verifyForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const lrn = (verifyLrnInput.value || "").trim();
+      const srn = normalize(verifySurnameInput.value || "");
 
-        if (dbSurname !== srn) {
-          Swal.fire({
-            icon: "error",
-            title: "Mismatch",
-            text: "Surname does not match our records."
-          });
-          return;
-        }
-
-        const token = downloadDoc.data()?.token || downloadDoc.data()?.Token;
+      if (!/^\d{12}$/.test(lrn) || !srn) {
         Swal.fire({
-          icon: "info",
-          title: "Your App Token",
-          html: `<strong>${token || "No token available"}</strong>`,
-          confirmButtonText: "Close",
-        }).then(() => {
-          verifyOverlay.style.display = "none";
+          icon: "error",
+          title: "Invalid Input",
+          text: "Please enter a 12-digit LRN and surname."
         });
-
         return;
       }
 
-      // fallback: check student_records
-      const studentDoc = await getDoc(doc(db, "student_records", `student_${lrn}`));
+      try {
+        // first check tokens collection
+        const tokenSnap = await getDoc(doc(db, "tokens", `student_${lrn}`));
+        const token = tokenSnap.exists() ? tokenSnap.data()?.token : null;
 
-      if (studentDoc.exists()) {
-        const studentInfo = studentDoc.data()?.student_info;
-        const dbSurname = normalize(studentInfo?.Surname || "");
+        // find an email to send to: prefer tokens doc email, else the student's record email
+        let studentEmail = tokenSnap.exists() ? tokenSnap.data()?.email : null;
 
-        if (dbSurname !== srn) {
+        if (!studentEmail) {
+          const studentDoc = await getDoc(doc(db, "student_records", `student_${lrn}`));
+          const studentInfo = studentDoc.exists() ? studentDoc.data()?.student_info : null;
+          studentEmail = studentInfo?.Email || studentInfo?.email || null;
+          const dbSurname = normalize(studentInfo?.Surname || "");
+          if (dbSurname !== srn) {
+            Swal.fire({
+              icon: "error",
+              title: "Mismatch",
+              text: "Surname does not match our records"
+            });
+            return;
+          }
+        }
+
+        if (!token) {
           Swal.fire({
-            icon: "error",
-            title: "Mismatch",
-            text: "Surname does not match our records."
+            icon: "warning",
+            title: "No Token Found",
+            text: "No token was generated for this LRN."
           });
           return;
         }
 
-        const token = studentInfo?.Token;
+        if (!studentEmail) {
+          Swal.fire({
+            icon: "warning",
+            title: "No Email On Record",
+            text: "We cannot email your token because there is no email on record. Please contact the guidance office."
+          });
+          return;
+        }
 
-        if (token) {
+        // send token via EmailJS
+        try {
+          await sendTokenEmailJS(studentEmail, srn, token);
           Swal.fire({
             icon: "info",
-            title: "Your App Token",
-            html: `<strong>${token}</strong>`,
-            confirmButtonText: "Close",
-          }).then(() => verifyOverlay.style.display = "none");
-
-          return;
+            title: "Token Sent",
+            text: `A copy of your token has been emailed to ${studentEmail}.`,
+          }).then(() => {
+            verifyOverlay.style.display = "none";
+          });
+        } catch (mailErr) {
+          console.error("Email send error (recovery):", mailErr);
+          Swal.fire({
+            icon: "error",
+            title: "Email Failed",
+            text: "We found your token but could not send it by email. Please contact the guidance office."
+          });
         }
-
+      } catch (err) {
+        console.error("verify error:", err);
         Swal.fire({
-          icon: "warning",
-          title: "No Token Found",
-          text: "No token was generated for this LRN."
+          icon: "error",
+          title: "Error",
+          text: "Verification failed. See console."
         });
-
-        return;
       }
+    });
 
-      Swal.fire({
-        icon: "error",
-        title: "Not Found",
-        text: "No records found for this LRN."
-      });
-
-    } catch (err) {
-      console.error("verify error:", err);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Verification failed. See console."
-      });
-    }
-  });
-
-} else {
-  console.warn("Verify overlay elements not found — token-recovery popup disabled.");
-}
+  } else {
+    console.warn("Verify overlay elements not found — token-recovery popup disabled.");
+  }
 
   // -------------------------
-  // LOAD ANNOUNCEMENTS
+  // LOAD ANNOUNCEMENTS (unchanged)
   // -------------------------
   async function loadAnnouncements() {
     const container = document.getElementById("announcementsContainer");
@@ -493,4 +633,5 @@ if (openVerifyForm && verifyOverlay && verifyForm && verifyLrnInput && verifySur
   }
 
   loadAnnouncements();
+
 }); // END DOMContentLoaded

@@ -150,11 +150,6 @@ header {
   transform: rotate(-45deg) translate(4px, -4px);
 }
 
-.content {
-  margin-top: 200px;
-}
-
-
 /* ===============================
    HERO SECTION
 =============================== */
@@ -264,7 +259,8 @@ header {
 }
 
 .mission-card,
-.vision-card {
+.vision-card,
+.corevalues-card {
   border-radius: 10px;
   width: 100%;
   max-width: 600px;
@@ -283,8 +279,14 @@ header {
   color: #111;
 }
 
+.corevalues-card{
+  background-color: #FFF4B0;
+  color: black;
+}
+
 .mission-card h2,
-.vision-card h2 {
+.vision-card h2,
+.corevalues-card h2 {
   font-size: 36px;
   display: flex;
   align-items: center;
@@ -292,7 +294,9 @@ header {
 }
 
 .mission-card img,
-.vision-card img {
+.vision-card img,
+.corevalues-card img {
+  width: 60px;
   height: 60px;
 }
 
@@ -301,6 +305,16 @@ header {
   font-size: 18px;
   line-height: 1.8;
   margin-top: 25px;
+}
+
+.corevalues-card p{
+  font-size: 30px;
+  line-height: 1.8;
+  margin-top: 25px;
+  font-style: italic;
+}
+.mission-card p span{
+  color: #F5CD04;
 }
 
 /* ===============================
@@ -354,6 +368,18 @@ header {
   line-height: 1.6;
 }
 
+.our-achievements-header p{
+  text-align: center;
+  font-weight: bold;
+  color: red;
+  margin-top: -20px;
+  font-size: larger;
+}
+
+.our-achievements-description{
+  margin-top: 20px;
+}
+
 /* ===============================
    HISTORY
 =============================== */
@@ -399,43 +425,6 @@ header {
   line-height: 1.6;
 }
 
-/* ===============================
-   PRINCIPAL
-=============================== */
-.Principal {
-  width: 90%;
-  max-width: 500px;
-  background-color: #880e0e;
-  border-radius: 15px;
-  padding: 20px;
-  margin: 40px auto;
-  text-align: center;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-.Principal img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.principal-content {
-  background-color: #a55e5e;
-  padding: 10px 15px;
-  border-radius: 20px;
-  margin-top: 10px;
-}
-
-.principal-name h1 {
-  font-size: 28px;
-  color: white;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000,
-               -1px 1px 0 #000, 1px 1px 0 #000;
-}
-
-.principal-name h4 {
-  color: #ffee58;
-  font-size: 22px;
-}
 
 /* ===============================
    FACULTY GRID
@@ -505,6 +494,23 @@ header {
   width: 90%;
   border-radius: 12px;
 }
+
+.Organizational-Structure-Team {
+   background-color: #800000;
+  width: 90%;
+  max-width: 1000px;
+  margin: 50px auto 100px;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+}
+
+
+.Organizational-Structure-Team img {
+  width: 100%; /* Image becomes full width inside the red box */
+  border-radius: 15px;
+}
+
 
 /* ===============================
    FOOTER
@@ -595,7 +601,7 @@ footer p {
     align-items: center;
     gap: 20px;
     padding: 20px 0;
-    border-top: 2px solid #800000;
+    border-top: 2px solid #ffce00;
     visibility: hidden;
     opacity: 0;
     transform: translateY(-10px);
